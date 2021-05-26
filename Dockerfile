@@ -8,4 +8,5 @@ RUN npm run build
 # remove 'as builder' tag if AWS fails - look up at notes.txt
 
 FROM nginx
+EXPOSE 80
 COPY --from=builder /app/build /usr/share/nginx/html

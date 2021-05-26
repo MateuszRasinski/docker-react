@@ -6,10 +6,17 @@ services:
 before_install:
   - docker build -t mrasinski/docker-react -f Dockerfile.dev .
 
-# Due to a change in how the Jest library works with Create React App,
-# we need to make a small modification
-# script:
-#   - docker run mrasinski/docker-react npm run test -- --coverage
-
 script:
   - docker run -e CI=true mrasinski/docker-react npm run test
+
+deploy:
+  provider: elasticbeanstalk
+  region: "eu-central-1"
+  app: "docker-react"
+  env: "Dockerreact-env"
+  bucket_name: "elasticbeanstalk-eu-central-1-631811234047"
+  bucket_path: "docker-react"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
